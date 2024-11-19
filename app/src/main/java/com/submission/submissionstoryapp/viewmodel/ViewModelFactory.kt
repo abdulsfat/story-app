@@ -1,4 +1,4 @@
-package com.submission.submissionstoryapp.utils
+package com.submission.submissionstoryapp.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,6 @@ import com.submission.submissionstoryapp.data.repository.UserRepository
 import com.submission.submissionstoryapp.di.Injection
 import com.submission.submissionstoryapp.view.login.LoginViewModel
 import com.submission.submissionstoryapp.view.main.MainViewModel
-
 
 class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
 
@@ -20,7 +19,10 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(repository) as T
             }
-            else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
+            modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
+                RegisterViewModel(repository) as T
+            }
+            else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }
 

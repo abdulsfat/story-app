@@ -8,7 +8,7 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.submission.submissionstoryapp.databinding.ActivityMainBinding
-import com.submission.submissionstoryapp.utils.ViewModelFactory
+import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
 import com.submission.submissionstoryapp.view.welcome.WelcomeActivity
 
 

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.submission.submissionstoryapp.data.model.UserModel
 import com.submission.submissionstoryapp.databinding.ActivityLoginBinding
-import com.submission.submissionstoryapp.utils.ViewModelFactory
+import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
 import com.submission.submissionstoryapp.view.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
