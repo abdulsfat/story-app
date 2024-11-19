@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.submission.submissionstoryapp.data.repository.UserRepository
 import com.submission.submissionstoryapp.di.Injection
-import com.submission.submissionstoryapp.view.login.LoginViewModel
-import com.submission.submissionstoryapp.view.main.MainViewModel
 
 class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
 

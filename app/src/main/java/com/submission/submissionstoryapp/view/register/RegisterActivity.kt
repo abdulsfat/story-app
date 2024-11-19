@@ -12,10 +12,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.submission.submissionstoryapp.databinding.ActivitySignupBinding
 import com.submission.submissionstoryapp.viewmodel.RegisterViewModel
 import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
 
+@Suppress("DEPRECATION")
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
 
@@ -31,6 +33,12 @@ class RegisterActivity : AppCompatActivity() {
         setupView()
         setupAction()
         playAnimation()
+
+        lifecycleScope.launchWhenStarted {
+            registerViewModel.isLoading.collect { isLoading ->
+                showLoading(isLoading)
+            }
+        }
 
         registerViewModel.onRegisterSuccess = { response ->
             showSuccessDialog(response.message ?: "Pendaftaran berhasil!")
@@ -87,6 +95,7 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            showLoading(true)
             registerViewModel.register(name, email, password)
         }
     }
@@ -103,7 +112,17 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.signupButton.isEnabled = !isLoading
+        binding.nameEditText.isEnabled = !isLoading
+        binding.emailEditText.isEnabled = !isLoading
+        binding.passwordEditText.isEnabled = !isLoading
+    }
+
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
+
 }

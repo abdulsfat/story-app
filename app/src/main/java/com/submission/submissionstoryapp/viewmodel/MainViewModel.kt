@@ -1,4 +1,4 @@
-package com.submission.submissionstoryapp.view.main
+package com.submission.submissionstoryapp.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

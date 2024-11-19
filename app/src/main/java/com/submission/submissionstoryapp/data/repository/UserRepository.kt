@@ -1,6 +1,7 @@
 package com.submission.submissionstoryapp.data.repository
 
 import com.submission.submissionstoryapp.api.ApiService
+import com.submission.submissionstoryapp.data.model.LoginResponse
 import com.submission.submissionstoryapp.data.model.SignupResponse
 import com.submission.submissionstoryapp.data.model.UserModel
 import com.submission.submissionstoryapp.utils.UserPreference
@@ -25,6 +26,10 @@ class UserRepository private constructor(
 
     suspend fun register(name: String, email: String, password: String): SignupResponse {
         return apiService.register(name, email, password)
+    }
+
+    suspend fun login(email: String, password: String): LoginResponse {
+        return apiService.login(email, password)
     }
 
     companion object {
