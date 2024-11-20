@@ -57,9 +57,9 @@ class LoginActivity : AppCompatActivity() {
             showLoading(true)
         }
 
-        viewModel.loginResult.observe(this) { result ->
+        viewModel.loginResult.observe(this) { user ->
             showLoading(false)
-            result?.let { user ->
+            user?.let {
                 viewModel.saveSession(user)
                 AlertDialog.Builder(this).apply {
                     setTitle("Yeah!")

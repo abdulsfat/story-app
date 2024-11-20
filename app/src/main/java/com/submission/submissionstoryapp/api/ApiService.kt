@@ -2,6 +2,7 @@ package com.submission.submissionstoryapp.api
 
 import com.submission.submissionstoryapp.data.model.LoginResponse
 import com.submission.submissionstoryapp.data.model.SignupResponse
+import com.submission.submissionstoryapp.data.model.StoryResponse
 import retrofit2.http.*
 
 interface ApiService {
@@ -20,4 +21,7 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String
     ): LoginResponse
+
+    @GET("stories")
+    suspend fun getStories(): StoryResponse
 }
