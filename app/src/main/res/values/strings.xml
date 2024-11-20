@@ -14,4 +14,10 @@
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
     <string name="description_image">desc</string>
+    <string name="gallery">gallery</string>
+    <string name="camera">camera</string>
+    <string name="upload">upload</string>
+    <string name="empty_image_warning" />
+    <string name="empty_description_warning">warning\n</string>
+    <string name="upload_failed">Update Story Gagal</string>
 </resources>

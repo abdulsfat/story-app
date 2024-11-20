@@ -4,6 +4,8 @@ import com.submission.submissionstoryapp.data.model.DetailStoryResponse
 import com.submission.submissionstoryapp.data.model.LoginResponse
 import com.submission.submissionstoryapp.data.model.SignupResponse
 import com.submission.submissionstoryapp.data.model.StoryResponse
+import com.submission.submissionstoryapp.data.model.UploadStoryResponse
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface ApiService {
@@ -30,4 +32,13 @@ interface ApiService {
     suspend fun getStoryDetail(
         @Path("id") storyId: String
     ): DetailStoryResponse
+
+    @Multipart
+    @POST("stories")
+    suspend fun uploadStory(
+        @Part photo: MultipartBody.Part,
+        @Part("description") description: okhttp3.RequestBody,
+        @Part("lat") lat: okhttp3.RequestBody?,
+        @Part("lon") lon: okhttp3.RequestBody?
+    ): UploadStoryResponse
 }

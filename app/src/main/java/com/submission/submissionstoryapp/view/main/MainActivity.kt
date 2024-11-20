@@ -16,10 +16,12 @@ import com.submission.submissionstoryapp.viewmodel.MainViewModel
 import com.submission.submissionstoryapp.viewmodel.StoryViewModel
 import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
 import com.submission.submissionstoryapp.view.adapter.StoryAdapter
+import com.submission.submissionstoryapp.view.addstory.AddStoryActivity
 import com.submission.submissionstoryapp.view.detail.DetailActivity
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
+
     private val mainViewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
@@ -39,6 +41,12 @@ class MainActivity : AppCompatActivity() {
         setupAction()
         setupRecyclerView()
         observeStories()
+        loadStories()
+
+        binding.fabAddStory.setOnClickListener {
+            val intent = Intent(this, AddStoryActivity::class.java)
+            startActivity(intent)
+        }
 
         mainViewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
@@ -89,10 +97,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadStories() {
+        lifecycleScope.launchWhenStarted {
+            storyViewModel.stories.collect { stories ->
+                // Jika cerita baru di-upload, tampilkan di atas
+                adapter.submitList(stories)
+            }
+        }
+    }
+
     private fun setupAction() {
         binding.logoutButton.setOnClickListener {
             mainViewModel.logout()
         }
     }
-
 }
