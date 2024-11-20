@@ -12,6 +12,9 @@ import com.submission.submissionstoryapp.databinding.ItemStoryBinding
 class StoryAdapter :
     ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
 
+    var onItemClick: ((ListStoryItem) -> Unit)? = null
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val binding = ItemStoryBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -36,7 +39,11 @@ class StoryAdapter :
                 tvStoryName.text = story.name
                 tvStoryDescription.text = story.description
             }
+            itemView.setOnClickListener {
+                onItemClick?.invoke(story)
+            }
         }
+
     }
 
     companion object {

@@ -1,7 +1,5 @@
 package com.submission.submissionstoryapp.api
 
-import android.util.Log
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,23 +10,13 @@ object ApiConfig {
 
     fun getApiService(token: String): ApiService {
         val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-        val authInterceptor = Interceptor { chain ->
-            val req = chain.request()
-            val requestHeaders = req.newBuilder()
-                .addHeader("Authorization", "Bearer ${token}")
-                .build()
-
-//            Log.d("ApiConfig", "Sending token: $token")
-
-            chain.proceed(requestHeaders)
-        }
 
         val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Authorization", "Bearer $token")
                     .build()
-//                Log.d("ApiConfig", "Sending token: $token")
                 chain.proceed(request)
             }
             .build()
@@ -39,7 +27,7 @@ object ApiConfig {
             .client(client)
             .build()
 
+
         return retrofit.create(ApiService::class.java)
     }
 }
-

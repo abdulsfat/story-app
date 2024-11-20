@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    tools:context=".view.detail.DetailActivity">
+
+    <!-- ImageView for Story Image -->
+    <ImageView
+        android:id="@+id/ivStoryImage"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/description_image"/>
+
+    <!-- Story Title -->
+    <TextView
+        android:id="@+id/storyTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Story Title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivStoryImage"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Story Description -->
+    <TextView
+        android:id="@+id/storyDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Story Description"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/storyTitle"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Story Date -->
+    <TextView
+        android:id="@+id/storyDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Story Date"
+        android:textSize="14sp"
+        android:textColor="#808080"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/storyDescription"
+        android:layout_marginTop="8dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

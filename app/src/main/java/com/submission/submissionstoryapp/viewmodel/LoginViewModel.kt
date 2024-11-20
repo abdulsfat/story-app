@@ -21,9 +21,8 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
             try {
                 val response = repository.login(email, password)
                 if (!response.error) {
-                    // Menggunakan loginResult dari response untuk membuat UserModel
                     val user = UserModel(email, response.loginResult.token ?: "")
-                    repository.saveSession(user)  // Menyimpan token ke DataStore
+                    repository.saveSession(user)
                     _loginResult.postValue(user)
                 } else {
                     _errorMessage.postValue(response.message)

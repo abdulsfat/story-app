@@ -1,7 +1,7 @@
 package com.submission.submissionstoryapp.di
 
+
 import android.content.Context
-import android.util.Log
 import com.submission.submissionstoryapp.api.ApiConfig
 import com.submission.submissionstoryapp.data.repository.StoryRepository
 import com.submission.submissionstoryapp.data.repository.UserRepository
@@ -25,6 +25,6 @@ object Injection {
         val pref = UserPreference.getInstance(context.dataStore)
         val user = runBlocking { pref.getUser().first() }
         val apiService = ApiConfig.getApiService(user.token)
-        return StoryRepository.getInstance(apiService, pref)
+        return StoryRepository.getInstance(apiService)
     }
 }

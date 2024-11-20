@@ -16,7 +16,7 @@ import com.submission.submissionstoryapp.viewmodel.MainViewModel
 import com.submission.submissionstoryapp.viewmodel.StoryViewModel
 import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
 import com.submission.submissionstoryapp.view.adapter.StoryAdapter
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.submission.submissionstoryapp.view.detail.DetailActivity
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
@@ -26,8 +26,6 @@ class MainActivity : AppCompatActivity() {
     private val storyViewModel by viewModels<StoryViewModel> {
         ViewModelFactory.getInstance(this)
     }
-
-    private val _errorMessage = MutableStateFlow<String?>(null)
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: StoryAdapter
@@ -69,6 +67,12 @@ class MainActivity : AppCompatActivity() {
         adapter = StoryAdapter()
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
+
+        adapter.onItemClick = { story ->
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("story_id", story.id)
+            startActivity(intent)
+        }
     }
 
     private fun observeStories() {

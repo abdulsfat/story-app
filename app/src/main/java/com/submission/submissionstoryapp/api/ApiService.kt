@@ -1,5 +1,6 @@
 package com.submission.submissionstoryapp.api
 
+import com.submission.submissionstoryapp.data.model.DetailStoryResponse
 import com.submission.submissionstoryapp.data.model.LoginResponse
 import com.submission.submissionstoryapp.data.model.SignupResponse
 import com.submission.submissionstoryapp.data.model.StoryResponse
@@ -24,4 +25,9 @@ interface ApiService {
 
     @GET("stories")
     suspend fun getStories(): StoryResponse
+
+    @GET("stories/{id}")
+    suspend fun getStoryDetail(
+        @Path("id") storyId: String
+    ): DetailStoryResponse
 }
