@@ -42,8 +42,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/primary"
             android:textColor="@color/black"
+            android:backgroundTint="@color/primary"
             android:text="@string/gallery"
             app:layout_constraintBottom_toTopOf="@+id/etStoryDescriptionArea"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,8 +55,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/primary"
             android:textColor="@color/black"
+            android:backgroundTint="@color/primary"
             android:text="@string/camera"
             app:layout_constraintBottom_toTopOf="@+id/etStoryDescriptionArea"
             app:layout_constraintEnd_toStartOf="@+id/galleryButton"
@@ -79,7 +79,8 @@
                 android:hint="@string/hint_desc"
                 android:inputType="textMultiLine"
                 android:minLines="7"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:outlineAmbientShadowColor="@color/primary"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

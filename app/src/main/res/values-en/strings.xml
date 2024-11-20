@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">SubmissionStoryApp</string>
+    <string name="signup">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="message_welcome_page">Want to share your experiences? Log in or sign up now. Enjoy our storytelling service! Only on Story APP</string>
+    <string name="title_welcome_page">Welcome to Story APP!</string>
+    <string name="title_signup_page">Complete your details below</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Please enter your data first</string>
+    <string name="title_login_page">Ready to share your story?</string>
+    <string name="name">Name</string>
+    <string name="message_main_page">Happy Learning at Story APP!</string>
+    <string name="greeting">Hello %1$s,</string>
+    <string name="logout">Logout</string>
+    <string name="description">Description</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="upload">Upload</string>
+    <string name="empty_image_warning" />
+    <string name="empty_description_warning">Warning\n</string>
+    <string name="upload_failed">Update Story Failed</string>
+
+    <string name="change_language">Change Language</string>
+    <string name="language_english">English</string>
+    <string name="language_indonesian">Indonesian</string>
+    <string name="select_language">Select Language</string>
+    <string name="settings">Settings</string>
+    <string name="hint_desc">Describe your story</string>
+    <string name="error_empty_description">Please provide a description for your story.</string>
+    <string name="error_empty_image">Please select an image to upload.</string>
+    <string name="upload_success">Story uploaded successfully!</string>
+    <string name="unexpected_error">An unexpected error occurred. Please try again.</string>
+
+</resources>

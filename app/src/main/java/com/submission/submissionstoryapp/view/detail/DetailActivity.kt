@@ -1,6 +1,7 @@
 package com.submission.submissionstoryapp.view.detail
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -50,6 +51,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun fetchStoryDetail(storyId: String, token: String) {
         lifecycleScope.launch {
+            showLoading(true)
             try {
                 val apiService = ApiConfig.getApiService(token)
                 val response = apiService.getStoryDetail(storyId)
@@ -82,7 +84,13 @@ class DetailActivity : AppCompatActivity() {
                     "Error: ${e.localizedMessage}",
                     Toast.LENGTH_SHORT
                 ).show()
+            } finally {
+                showLoading(false)
             }
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

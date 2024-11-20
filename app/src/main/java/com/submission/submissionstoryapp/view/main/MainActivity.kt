@@ -3,13 +3,18 @@ package com.submission.submissionstoryapp.view.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.submission.submissionstoryapp.R
 import com.submission.submissionstoryapp.databinding.ActivityMainBinding
 import com.submission.submissionstoryapp.view.welcome.WelcomeActivity
 import com.submission.submissionstoryapp.viewmodel.MainViewModel
@@ -18,6 +23,7 @@ import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
 import com.submission.submissionstoryapp.view.adapter.StoryAdapter
 import com.submission.submissionstoryapp.view.addstory.AddStoryActivity
 import com.submission.submissionstoryapp.view.detail.DetailActivity
+import java.util.Locale
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
@@ -38,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupView()
-        setupAction()
+        setupToolbar()
         setupRecyclerView()
         observeStories()
         loadStories()
@@ -58,6 +64,32 @@ class MainActivity : AppCompatActivity() {
         storyViewModel.fetchStories()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+
+            R.id.logout -> {
+                mainViewModel.logout()
+                val intent = Intent(this, WelcomeActivity::class.java)
+                startActivity(intent)
+                finish()
+                true
+            }
+
+            R.id.change_language -> {
+                showLanguageSelectionDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
     private fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -69,6 +101,10 @@ class MainActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
     }
 
     private fun setupRecyclerView() {
@@ -100,15 +136,32 @@ class MainActivity : AppCompatActivity() {
     private fun loadStories() {
         lifecycleScope.launchWhenStarted {
             storyViewModel.stories.collect { stories ->
-                // Jika cerita baru di-upload, tampilkan di atas
                 adapter.submitList(stories)
             }
         }
     }
 
-    private fun setupAction() {
-        binding.logoutButton.setOnClickListener {
-            mainViewModel.logout()
-        }
+    private fun showLanguageSelectionDialog() {
+        val languages = arrayOf(getString(R.string.language_english), getString(R.string.language_indonesian))
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.select_language))
+            .setItems(languages) { _, which ->
+                when (which) {
+                    0 -> setLanguage("en")
+                    1 -> setLanguage("id")
+                }
+            }
+            .show()
+    }
+
+    private fun setLanguage(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+
+        val config = resources.configuration
+        config.setLocale(locale)
+
+        resources.updateConfiguration(config, resources.displayMetrics)
+        recreate()
     }
 }

@@ -70,6 +70,23 @@ class AddStoryActivity : AppCompatActivity() {
         binding.uploadButton.setOnClickListener { uploadImage() }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        currentImageUri?.let {
+            outState.putString("currentImageUri", it.toString())
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val savedUri = savedInstanceState.getString("currentImageUri")
+        if (!savedUri.isNullOrEmpty()) {
+            currentImageUri = Uri.parse(savedUri)
+            showImage()
+        }
+    }
+
+
     private fun startGallery() {
         launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
@@ -107,18 +124,22 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
-
     private fun uploadImage() {
+        val descriptionText = binding.etStoryDescription.text.toString().trim()
+        if (descriptionText.isEmpty()) {
+            showToast(getString(R.string.error_empty_description))
+            return
+        }
+
+        if (currentImageUri == null) {
+            showToast(getString(R.string.error_empty_image))
+            return
+        }
+
         currentImageUri?.let { uri ->
             try {
                 val imageFile = uriToFile(uri, this).reduceFileImage()
                 Log.d("Image Info", "File: ${imageFile.path}, Size: ${imageFile.length()} bytes")
-
-                val descriptionText = binding.etStoryDescription.text.toString().trim()
-                if (descriptionText.isEmpty()) {
-                    showToast(getString(R.string.empty_description_warning))
-                    return
-                }
 
                 val latRequestBody: okhttp3.RequestBody? = null
                 val lonRequestBody: okhttp3.RequestBody? = null
@@ -143,32 +164,28 @@ class AddStoryActivity : AppCompatActivity() {
                             lon = lonRequestBody
                         )
                         showLoading(false)
-                        showToast(response.message ?: "Upload successful!")
+                        showToast(response.message ?: "Story uploaded successfully!")
 
                         val intent = Intent(this@AddStoryActivity, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                         startActivity(intent)
                         finish()
-
                     } catch (e: HttpException) {
                         showLoading(false)
-                        val errorBody = e.response()?.errorBody()?.string()
-                        Log.e("Upload Error", "Error: $errorBody")
-                        showToast(getString(R.string.upload_failed))
+                        Log.e("Upload Error", "Error: ${e.response()?.errorBody()?.string()}")
+                        showToast("Failed to upload story. Please try again.")
                     } catch (e: Exception) {
                         showLoading(false)
-
                         Log.e("Exception", "Error: ${e.localizedMessage}")
-                        showToast(getString(R.string.upload_failed))
+                        showToast("An unexpected error occurred. Please try again.")
                     }
                 }
             } catch (e: IOException) {
                 showLoading(false)
-                showToast(getString(R.string.upload_failed))
+                showToast("Failed to prepare the image. Please try again.")
             }
-        } ?: showToast(getString(R.string.empty_image_warning))
+        }
     }
-
 
     private suspend fun getTokenFromDataStore(): String {
         val user = userPreference.getSession().first()
@@ -178,6 +195,7 @@ class AddStoryActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
+
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }

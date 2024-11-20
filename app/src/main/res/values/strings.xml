@@ -2,22 +2,35 @@
     <string name="app_name">SubmissionStoryApp</string>
     <string name="signup">Daftar</string>
     <string name="login">Masuk</string>
-    <string name="message_welcome_page">Mau belajar Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicoding aja!</string>
-    <string name="title_welcome_page">Selamat datang di Dicoding!</string>
+    <string name="message_welcome_page">Mau berbagi pengalaman mu? segera masuk atau daftar. Nikmati layanan berbagi cerita! hanya di Story APP</string>
+    <string name="title_welcome_page">Selamat datang di Story APP!</string>
     <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="message_login_page">Masukkan dulu datamu ya</string>
-    <string name="title_login_page">Sudah siap untuk upgrade skill?</string>
+    <string name="title_login_page">Sudah siap untuk berbagi cerita?</string>
     <string name="name">Nama</string>
-    <string name="message_main_page">Selamat Belajar di Dicoding.</string>
+    <string name="message_main_page">Selamat Belajar di Story APP!</string>
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
-    <string name="description_image">desc</string>
-    <string name="gallery">gallery</string>
-    <string name="camera">camera</string>
-    <string name="upload">upload</string>
+    <string name="description">Deskripsi </string>
+    <string name="gallery">Galeri</string>
+    <string name="camera">Kamera</string>
+    <string name="upload">Unggah</string>
     <string name="empty_image_warning" />
     <string name="empty_description_warning">warning\n</string>
     <string name="upload_failed">Update Story Gagal</string>
+
+    <string name="change_language">Ubah Bahasa</string>
+    <string name="language_english">Bahasa Inggris</string>
+    <string name="language_indonesian">Bahasa Indonesia</string>
+    <string name="select_language">Pilih Bahasa</string>
+    <string name="settings">Pengaturan</string>
+    <string name="hint_desc">Deskripsikan cerita Anda</string>
+    <string name="error_empty_description">Harap berikan deskripsi untuk cerita Anda.</string>
+    <string name="error_empty_image">Harap pilih gambar untuk diunggah.</string>
+    <string name="upload_success">Cerita berhasil diunggah!</string>
+    <string name="unexpected_error">Terjadi kesalahan yang tidak terduga. Silakan coba lagi.</string>
+    <string name="story_date">10 Jan 2024</string>
+
 </resources>

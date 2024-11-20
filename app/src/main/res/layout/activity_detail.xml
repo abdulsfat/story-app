@@ -7,7 +7,17 @@
     android:padding="16dp"
     tools:context=".view.detail.DetailActivity">
 
-    <!-- ImageView for Story Image -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminateTint="@color/primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <ImageView
         android:id="@+id/ivStoryImage"
         android:layout_width="0dp"
@@ -16,14 +26,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:scaleType="centerCrop"
-        android:contentDescription="@string/description_image"/>
+        android:contentDescription="@string/description"/>
 
-    <!-- Story Title -->
     <TextView
         android:id="@+id/storyTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Story Title"
+        android:text="@string/name"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,25 +40,23 @@
         app:layout_constraintTop_toBottomOf="@+id/ivStoryImage"
         android:layout_marginTop="16dp"/>
 
-    <!-- Story Description -->
     <TextView
         android:id="@+id/storyDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Story Description"
+        android:text="@string/description"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/storyTitle"
         android:layout_marginTop="8dp"/>
 
-    <!-- Story Date -->
     <TextView
         android:id="@+id/storyDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Story Date"
-        android:textSize="14sp"
+        android:text="@string/story_date"
+        android:textSize="12sp"
         android:textColor="#808080"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
