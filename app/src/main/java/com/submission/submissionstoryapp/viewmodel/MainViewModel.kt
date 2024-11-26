@@ -8,15 +8,17 @@ import com.submission.submissionstoryapp.data.model.UserModel
 import com.submission.submissionstoryapp.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: UserRepository) : ViewModel() {
+class MainViewModel(
+    private val userRepository: UserRepository
+) : ViewModel() {
+
     fun getSession(): LiveData<UserModel> {
-        return repository.getSession().asLiveData()
+        return userRepository.getSession().asLiveData()
     }
 
     fun logout() {
         viewModelScope.launch {
-            repository.logout()
+            userRepository.logout()
         }
     }
-
 }

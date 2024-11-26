@@ -1,29 +1,24 @@
 package com.submission.submissionstoryapp.data.repository
 
-import com.submission.submissionstoryapp.api.ApiService
+import com.submission.submissionstoryapp.api.ApiServiceStory
 import com.submission.submissionstoryapp.data.model.StoryResponse
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
-class StoryRepository(private val apiService: ApiService) {
+
+class StoryRepository private constructor(private val apiServiceStory: ApiServiceStory) {
 
     suspend fun getStories(): StoryResponse {
-        return withContext(Dispatchers.IO) {
-            apiService.getStories()
-        }
+        return apiServiceStory.getStories()
     }
 
     companion object {
         @Volatile
-        private var INSTANCE: StoryRepository? = null
+        private var instance: StoryRepository? = null
 
-        fun getInstance(apiService: ApiService): StoryRepository {
-            return INSTANCE ?: synchronized(this) {
-                val instance = StoryRepository(apiService)
-                INSTANCE = instance
-                instance
+        fun getInstance(apiServiceStory: ApiServiceStory): StoryRepository {
+            return instance ?: synchronized(this) {
+                instance ?: StoryRepository(apiServiceStory).also { instance = it }
             }
         }
     }
-
 }
+

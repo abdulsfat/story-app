@@ -1,6 +1,6 @@
 package com.submission.submissionstoryapp.viewmodel
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.submission.submissionstoryapp.data.repository.StoryRepository
@@ -9,7 +9,8 @@ import com.submission.submissionstoryapp.di.Injection
 
 class ViewModelFactory(
     private val userRepository: UserRepository,
-    private val storyRepository: StoryRepository
+    private val storyRepository: StoryRepository,
+    private val application: Application
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -25,7 +26,7 @@ class ViewModelFactory(
                 RegisterViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(StoryViewModel::class.java) -> {
-                StoryViewModel(storyRepository) as T
+                StoryViewModel(application, storyRepository, userRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
@@ -34,17 +35,20 @@ class ViewModelFactory(
     companion object {
         @Volatile
         private var INSTANCE: ViewModelFactory? = null
+
         @JvmStatic
-        fun getInstance(context: Context): ViewModelFactory {
+        fun getInstance(application: Application): ViewModelFactory {
             if (INSTANCE == null) {
                 synchronized(ViewModelFactory::class.java) {
                     INSTANCE = ViewModelFactory(
-                        Injection.provideUserRepository(context),
-                        Injection.provideStoryRepository(context)
+                        Injection.provideUserRepository(application),
+                        Injection.provideStoryRepository(application),
+                        application
                     )
                 }
             }
             return INSTANCE as ViewModelFactory
         }
     }
+
 }

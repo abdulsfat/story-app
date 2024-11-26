@@ -22,14 +22,14 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
                 val response = repository.login(email, password)
                 if (!response.error) {
                     val user = UserModel(email, response.loginResult.token ?: "")
-                    repository.saveSession(user)
+                    saveSession(user)
                     _loginResult.postValue(user)
                 } else {
                     _errorMessage.postValue(response.message)
                 }
             } catch (e: HttpException) {
                 if (e.code() == 401) {
-                    _errorMessage.postValue("401")
+                    _errorMessage.postValue("401 Unauthorized")
                 } else {
                     _errorMessage.postValue("Gagal login: ${e.message}")
                 }
@@ -38,9 +38,10 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
             }
         }
     }
-    fun saveSession(user: UserModel) {
-        viewModelScope.launch {
-            repository.saveSession(user)
-        }
+
+    suspend fun saveSession(user: UserModel) {
+        repository.saveSession(user)
     }
+
 }
+

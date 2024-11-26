@@ -1,30 +1,16 @@
 package com.submission.submissionstoryapp.api
 
 import com.submission.submissionstoryapp.data.model.DetailStoryResponse
-import com.submission.submissionstoryapp.data.model.LoginResponse
-import com.submission.submissionstoryapp.data.model.SignupResponse
 import com.submission.submissionstoryapp.data.model.StoryResponse
 import com.submission.submissionstoryapp.data.model.UploadStoryResponse
 import okhttp3.MultipartBody
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.Path
 
-interface ApiService {
-
-    @FormUrlEncoded
-    @POST("register")
-    suspend fun register(
-        @Field("name") name: String,
-        @Field("email") email: String,
-        @Field("password") password: String
-    ): SignupResponse
-
-    @FormUrlEncoded
-    @POST("login")
-    suspend fun login(
-        @Field("email") email: String,
-        @Field("password") password: String
-    ): LoginResponse
-
+interface ApiServiceStory {
     @GET("stories")
     suspend fun getStories(): StoryResponse
 

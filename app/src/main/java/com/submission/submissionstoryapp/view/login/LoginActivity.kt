@@ -10,14 +10,16 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.viewModelScope
 import com.submission.submissionstoryapp.databinding.ActivityLoginBinding
 import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
 import com.submission.submissionstoryapp.view.main.MainActivity
 import com.submission.submissionstoryapp.viewmodel.LoginViewModel
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(application)
     }
     private lateinit var binding: ActivityLoginBinding
 
@@ -60,18 +62,9 @@ class LoginActivity : AppCompatActivity() {
         viewModel.loginResult.observe(this) { user ->
             showLoading(false)
             user?.let {
-                viewModel.saveSession(user)
-                AlertDialog.Builder(this).apply {
-                    setTitle("Yeah!")
-                    setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
-                    setPositiveButton("Lanjut") { _, _ ->
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent)
-                        finish()
-                    }
-                    create()
-                    show()
+                viewModel.viewModelScope.launch {
+                    viewModel.saveSession(user)
+                    navigateToMainActivity()
                 }
             }
         }
@@ -85,6 +78,21 @@ class LoginActivity : AppCompatActivity() {
                     showAlertDialog("Gagal Login", it)
                 }
             }
+        }
+    }
+
+    private fun navigateToMainActivity() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Yeah!")
+            setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+            setPositiveButton("Lanjut") { _, _ ->
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
+            }
+            create()
+            show()
         }
     }
 

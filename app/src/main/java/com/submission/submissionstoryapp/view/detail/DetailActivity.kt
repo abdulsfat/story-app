@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.submission.submissionstoryapp.databinding.ActivityDetailBinding
 import com.submission.submissionstoryapp.api.ApiConfig
+import com.submission.submissionstoryapp.data.repository.UserRepository
 import com.submission.submissionstoryapp.utils.UserPreference
 import com.submission.submissionstoryapp.utils.dataStore
 import kotlinx.coroutines.launch
@@ -53,7 +54,11 @@ class DetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             showLoading(true)
             try {
-                val apiService = ApiConfig.getApiService(token)
+                val pref = UserPreference.getInstance(dataStore)
+                val apiServiceAuth = ApiConfig.getAuthService()
+
+                val userRepository = UserRepository.getInstance(pref, apiServiceAuth)
+                val apiService = ApiConfig.getStoryService(userRepository, token)
                 val response = apiService.getStoryDetail(storyId)
 
 //                Log.d("DetailActivity", "Response: $response")

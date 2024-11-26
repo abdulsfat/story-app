@@ -22,7 +22,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
 
     private val registerViewModel: RegisterViewModel by viewModels {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(application)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

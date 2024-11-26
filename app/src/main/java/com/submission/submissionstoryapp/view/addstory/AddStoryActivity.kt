@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.submission.submissionstoryapp.R
 import com.submission.submissionstoryapp.api.ApiConfig
+import com.submission.submissionstoryapp.data.repository.UserRepository
 import com.submission.submissionstoryapp.databinding.ActivityAddStoryBinding
 import com.submission.submissionstoryapp.utils.UserPreference
 import com.submission.submissionstoryapp.utils.dataStore
@@ -30,6 +31,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.IOException
+
 
 class AddStoryActivity : AppCompatActivity() {
 
@@ -155,7 +157,13 @@ class AddStoryActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     try {
                         val token = getTokenFromDataStore()
-                        val apiService = ApiConfig.getApiService(token)
+
+                        val pref = UserPreference.getInstance(dataStore)
+                        val apiServiceAuth = ApiConfig.getAuthService()
+
+                        val userRepository = UserRepository.getInstance(pref, apiServiceAuth)
+                        val apiService = ApiConfig.getStoryService(userRepository, token)
+
 
                         val response = apiService.uploadStory(
                             photo = multipartBody,

@@ -23,16 +23,17 @@ import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
 import com.submission.submissionstoryapp.view.adapter.StoryAdapter
 import com.submission.submissionstoryapp.view.addstory.AddStoryActivity
 import com.submission.submissionstoryapp.view.detail.DetailActivity
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private val mainViewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(application)
     }
-    private val storyViewModel by viewModels<StoryViewModel> {
-        ViewModelFactory.getInstance(this)
+    private val storyViewModel: StoryViewModel by viewModels {
+        ViewModelFactory.getInstance(application)
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -46,8 +47,8 @@ class MainActivity : AppCompatActivity() {
         setupView()
         setupToolbar()
         setupRecyclerView()
-        observeStories()
-        loadStories()
+        observeViewModel()
+        fetchStoriesWithToken()
 
         binding.fabAddStory.setOnClickListener {
             val intent = Intent(this, AddStoryActivity::class.java)
@@ -60,8 +61,6 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-        storyViewModel.fetchStories()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -72,7 +71,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-
             R.id.logout -> {
                 mainViewModel.logout()
                 val intent = Intent(this, WelcomeActivity::class.java)
@@ -80,7 +78,6 @@ class MainActivity : AppCompatActivity() {
                 finish()
                 true
             }
-
             R.id.change_language -> {
                 showLanguageSelectionDialog()
                 true
@@ -88,7 +85,6 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
     private fun setupView() {
         @Suppress("DEPRECATION")
@@ -119,24 +115,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeStories() {
-        lifecycleScope.launchWhenStarted {
+    private fun observeViewModel() {
+        lifecycleScope.launch {
             storyViewModel.stories.collect { stories ->
                 adapter.submitList(stories)
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch {
             storyViewModel.isLoading.collect { isLoading ->
                 binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
         }
     }
 
-    private fun loadStories() {
-        lifecycleScope.launchWhenStarted {
-            storyViewModel.stories.collect { stories ->
-                adapter.submitList(stories)
+    private fun fetchStoriesWithToken() {
+        lifecycleScope.launch {
+            mainViewModel.getSession().observe(this@MainActivity) { user ->
+                val token = user.token
+                if (token.isNotEmpty()) {
+                    storyViewModel.fetchStories()
+                } else {
+                    showErrorDialog("Token tidak tersedia. Harap login ulang.")
+                }
             }
         }
     }
@@ -163,5 +164,17 @@ class MainActivity : AppCompatActivity() {
 
         resources.updateConfiguration(config, resources.displayMetrics)
         recreate()
+    }
+
+    private fun showErrorDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Error")
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                startActivity(Intent(this, WelcomeActivity::class.java))
+                finish()
+            }
+            .show()
     }
 }

@@ -1,14 +1,21 @@
 package com.submission.submissionstoryapp.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.submission.submissionstoryapp.data.model.ListStoryItem
 import com.submission.submissionstoryapp.data.repository.StoryRepository
+import com.submission.submissionstoryapp.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class StoryViewModel(private val repository: StoryRepository) : ViewModel() {
+class StoryViewModel(
+    application: Application,
+    private val storyRepository: StoryRepository,
+    private val userRepository: UserRepository
+) : AndroidViewModel(application) {
 
     private val _stories = MutableStateFlow<List<ListStoryItem>>(emptyList())
     val stories: StateFlow<List<ListStoryItem>> = _stories
@@ -22,22 +29,35 @@ class StoryViewModel(private val repository: StoryRepository) : ViewModel() {
     fun fetchStories() {
         viewModelScope.launch {
             _isLoading.value = true
+            _errorMessage.value = null
+
             try {
-                val response = repository.getStories()
-                if (response.error == false) {
-                    _stories.value = response.listStory?.filterNotNull() ?: emptyList()
+                val token = getTokenFromDataStore()
+
+                if (token.isNotEmpty()) {
+                    val response = storyRepository.getStories()
+
+
+                    if (response.error == false) {
+                        _stories.value = response.listStory?.filterNotNull() ?: emptyList()
+                    } else {
+                        _errorMessage.value = response.message ?: "Terjadi kesalahan."
+                    }
                 } else {
-                    _errorMessage.value = response.message ?: "Terjadi kesalahan."
+                    _errorMessage.value = "Token kosong. Harap login terlebih dahulu."
                 }
             } catch (e: Exception) {
-                _errorMessage.value = "Gagal mengambil data: ${e.message}"
+                _errorMessage.value = "Gagal mengambil data: ${e.localizedMessage ?: e.message}"
             } finally {
                 _isLoading.value = false
             }
         }
     }
 
-    fun clearErrorMessage() {
-        _errorMessage.value = null
+    private suspend fun getTokenFromDataStore(): String {
+        val user = userRepository.getSession().first()
+        val token = user.token
+        return token
     }
+
 }

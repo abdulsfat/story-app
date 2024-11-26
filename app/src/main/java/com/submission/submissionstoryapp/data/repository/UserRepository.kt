@@ -1,6 +1,7 @@
 package com.submission.submissionstoryapp.data.repository
 
-import com.submission.submissionstoryapp.api.ApiService
+import android.util.Log
+import com.submission.submissionstoryapp.api.ApiServiceAuth
 import com.submission.submissionstoryapp.data.model.LoginResponse
 import com.submission.submissionstoryapp.data.model.SignupResponse
 import com.submission.submissionstoryapp.data.model.UserModel
@@ -9,11 +10,12 @@ import kotlinx.coroutines.flow.Flow
 
 class UserRepository private constructor(
     private val userPreference: UserPreference,
-    private val apiService: ApiService
+    private val apiService: ApiServiceAuth
 ) {
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
+        Log.d("UserPreference", "Token saved: ${user.token}")
     }
 
     fun getSession(): Flow<UserModel> {
@@ -32,17 +34,16 @@ class UserRepository private constructor(
         return apiService.login(email, password)
     }
 
-
-
     companion object {
         @Volatile
         private var instance: UserRepository? = null
         fun getInstance(
             userPreference: UserPreference,
-            apiService: ApiService
+            apiService: ApiServiceAuth
         ): UserRepository =
             instance ?: synchronized(this) {
                 instance ?: UserRepository(userPreference, apiService)
             }.also { instance = it }
+
     }
 }
