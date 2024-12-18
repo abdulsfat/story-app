@@ -31,6 +31,14 @@
     <string name="error_empty_image">Harap pilih gambar untuk diunggah.</string>
     <string name="upload_success">Cerita berhasil diunggah!</string>
     <string name="unexpected_error">Terjadi kesalahan yang tidak terduga. Silakan coba lagi.</string>
+
     <string name="story_date">10 Jan 2024</string>
+    <string name="buka_map">Buka map</string>
+    <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
 
 </resources>

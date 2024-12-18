@@ -1,24 +1,59 @@
 package com.submission.submissionstoryapp.data.repository
 
-import com.submission.submissionstoryapp.api.ApiServiceStory
-import com.submission.submissionstoryapp.data.model.StoryResponse
+import android.util.Log
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
+import com.submission.submissionstoryapp.data.StoryRemoteMediator
+import com.submission.submissionstoryapp.data.database.StoryDatabase
+import com.submission.submissionstoryapp.data.network.api.ApiServiceStory
+import com.submission.submissionstoryapp.data.network.story.ListStoryItem
+import com.submission.submissionstoryapp.utils.toListStoryItem
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
+class StoryRepository private constructor(
+    private val storyDatabase: StoryDatabase,
+    private val apiServiceStory: ApiServiceStory
+) {
+    private val TAG = "StoryRepository"
 
-class StoryRepository private constructor(private val apiServiceStory: ApiServiceStory) {
+    suspend fun getStoriesWithLocation() = apiServiceStory.getStoriesWithLocation(1)
 
-    suspend fun getStories(): StoryResponse {
-        return apiServiceStory.getStories()
+    @OptIn(ExperimentalPagingApi::class)
+    fun getStories(): Flow<PagingData<ListStoryItem>> {
+        Log.d(TAG, "getStories() called - Creating Pager and returning flow")
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5,
+                prefetchDistance = 2,
+                enablePlaceholders = false
+            ),
+            remoteMediator = StoryRemoteMediator(storyDatabase, apiServiceStory),
+            pagingSourceFactory = {
+                Log.d(TAG, "PagingSourceFactory called - Fetching from database")
+                storyDatabase.storyDao().getAllStory()
+            }
+        ).flow.map { pagingData->
+            pagingData.map { StoryEntity->
+                StoryEntity.toListStoryItem()
+            }
+        }
     }
 
     companion object {
         @Volatile
         private var instance: StoryRepository? = null
 
-        fun getInstance(apiServiceStory: ApiServiceStory): StoryRepository {
+        fun getInstance(
+            storyDatabase: StoryDatabase,
+            apiServiceStory: ApiServiceStory
+        ): StoryRepository {
             return instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiServiceStory).also { instance = it }
+                instance ?: StoryRepository(storyDatabase, apiServiceStory).also { instance = it }
             }
         }
     }
 }
-

@@ -11,6 +11,8 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
+import com.submission.submissionstoryapp.data.database.StoryEntity
+import com.submission.submissionstoryapp.data.network.story.ListStoryItem
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -103,5 +105,17 @@ fun rotateImage(source: Bitmap, angle: Float): Bitmap? {
     matrix.postRotate(angle)
     return Bitmap.createBitmap(
         source, 0, 0, source.width, source.height, matrix, true
+    )
+}
+
+fun StoryEntity.toListStoryItem(): ListStoryItem {
+    return ListStoryItem(
+        id = this.id,
+        photoUrl = this.photoUrl,
+        createdAt = this.createdAt,
+        name = this.name,
+        description = this.description,
+        lon = this.lon,
+        lat = this.lat
     )
 }

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.submission.submissionstoryapp.databinding.ActivityDetailBinding
-import com.submission.submissionstoryapp.api.ApiConfig
+import com.submission.submissionstoryapp.data.network.api.ApiConfig
 import com.submission.submissionstoryapp.data.repository.UserRepository
 import com.submission.submissionstoryapp.utils.UserPreference
 import com.submission.submissionstoryapp.utils.dataStore
@@ -58,7 +58,7 @@ class DetailActivity : AppCompatActivity() {
                 val apiServiceAuth = ApiConfig.getAuthService()
 
                 val userRepository = UserRepository.getInstance(pref, apiServiceAuth)
-                val apiService = ApiConfig.getStoryService(userRepository, token)
+                val apiService = ApiConfig.getStoryService(userRepository)
                 val response = apiService.getStoryDetail(storyId)
 
 //                Log.d("DetailActivity", "Response: $response")

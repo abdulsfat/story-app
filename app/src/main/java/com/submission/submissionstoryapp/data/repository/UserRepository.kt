@@ -1,9 +1,9 @@
 package com.submission.submissionstoryapp.data.repository
 
 import android.util.Log
-import com.submission.submissionstoryapp.api.ApiServiceAuth
-import com.submission.submissionstoryapp.data.model.LoginResponse
-import com.submission.submissionstoryapp.data.model.SignupResponse
+import com.submission.submissionstoryapp.data.network.api.ApiServiceAuth
+import com.submission.submissionstoryapp.data.network.authentication.LoginResponse
+import com.submission.submissionstoryapp.data.network.authentication.SignupResponse
 import com.submission.submissionstoryapp.data.model.UserModel
 import com.submission.submissionstoryapp.utils.UserPreference
 import kotlinx.coroutines.flow.Flow

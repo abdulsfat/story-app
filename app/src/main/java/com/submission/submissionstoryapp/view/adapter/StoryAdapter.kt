@@ -2,18 +2,16 @@ package com.submission.submissionstoryapp.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.submission.submissionstoryapp.data.model.ListStoryItem
+import com.submission.submissionstoryapp.data.network.story.ListStoryItem
 import com.submission.submissionstoryapp.databinding.ItemStoryBinding
 
-class StoryAdapter :
-    ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
+class StoryAdapter : PagingDataAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
 
     var onItemClick: ((ListStoryItem) -> Unit)? = null
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val binding = ItemStoryBinding.inflate(
@@ -26,7 +24,9 @@ class StoryAdapter :
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         val story = getItem(position)
-        holder.bind(story)
+        if (story != null) {
+            holder.bind(story)
+        }
     }
 
     inner class StoryViewHolder(private val binding: ItemStoryBinding) :
@@ -43,7 +43,6 @@ class StoryAdapter :
                 onItemClick?.invoke(story)
             }
         }
-
     }
 
     companion object {

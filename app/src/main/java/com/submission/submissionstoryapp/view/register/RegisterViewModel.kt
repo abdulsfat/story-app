@@ -1,10 +1,10 @@
-package com.submission.submissionstoryapp.viewmodel
+package com.submission.submissionstoryapp.view.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.submission.submissionstoryapp.data.repository.UserRepository
-import com.submission.submissionstoryapp.data.model.SignupResponse
+import com.submission.submissionstoryapp.data.network.authentication.SignupResponse
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import kotlinx.coroutines.flow.MutableStateFlow

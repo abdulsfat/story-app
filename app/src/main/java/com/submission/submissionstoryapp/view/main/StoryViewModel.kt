@@ -1,14 +1,16 @@
-package com.submission.submissionstoryapp.viewmodel
+package com.submission.submissionstoryapp.view.main
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.submission.submissionstoryapp.data.model.ListStoryItem
+import com.submission.submissionstoryapp.data.network.story.ListStoryItem
 import com.submission.submissionstoryapp.data.repository.StoryRepository
 import com.submission.submissionstoryapp.data.repository.UserRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class StoryViewModel(
@@ -16,6 +18,7 @@ class StoryViewModel(
     private val storyRepository: StoryRepository,
     private val userRepository: UserRepository
 ) : AndroidViewModel(application) {
+
 
     private val _stories = MutableStateFlow<List<ListStoryItem>>(emptyList())
     val stories: StateFlow<List<ListStoryItem>> = _stories
@@ -35,14 +38,8 @@ class StoryViewModel(
                 val token = getTokenFromDataStore()
 
                 if (token.isNotEmpty()) {
-                    val response = storyRepository.getStories()
+                    storyRepository.getStories()
 
-
-                    if (response.error == false) {
-                        _stories.value = response.listStory?.filterNotNull() ?: emptyList()
-                    } else {
-                        _errorMessage.value = response.message ?: "Terjadi kesalahan."
-                    }
                 } else {
                     _errorMessage.value = "Token kosong. Harap login terlebih dahulu."
                 }
@@ -53,6 +50,25 @@ class StoryViewModel(
             }
         }
     }
+
+    fun fetchStoriesWithLocation(): Flow<List<ListStoryItem>> {
+        _isLoading.value = true
+        return flow {
+            try {
+                val response = storyRepository.getStoriesWithLocation()
+                emit(
+                    response.listStory?.filterNotNull()?.filter { storyItem ->
+                        storyItem.lat != null && storyItem.lon != null
+                    } ?: emptyList()
+                )
+            } catch (e: Exception) {
+                emit(emptyList())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
 
     private suspend fun getTokenFromDataStore(): String {
         val user = userRepository.getSession().first()

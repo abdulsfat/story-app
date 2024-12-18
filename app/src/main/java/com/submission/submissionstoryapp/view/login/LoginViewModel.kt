@@ -1,4 +1,4 @@
-package com.submission.submissionstoryapp.viewmodel
+package com.submission.submissionstoryapp.view.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

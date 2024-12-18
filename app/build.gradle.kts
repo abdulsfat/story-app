@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -32,6 +35,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
 
     buildFeatures {
@@ -43,27 +47,43 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    implementation(libs.material)
+    implementation(libs.material.v180)
+    implementation(libs.androidx.paging.runtime.ktx)
+
+    ksp(libs.androidx.room.compiler.v250)
+
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
+
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation (libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.activity.ktx)
     implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
-    implementation (libs.material.v180)
 
     implementation (libs.retrofit)
     implementation (libs.converter.gson.v290)
     implementation (libs.converter.gson)
     implementation (libs.glide)
+
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.maps.v1820)
+    implementation(libs.play.services.location)
+
+    implementation(libs.room.paging)
 
 
 }

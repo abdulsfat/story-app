@@ -8,13 +8,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.submission.submissionstoryapp.R
-import com.submission.submissionstoryapp.api.ApiConfig
+import com.submission.submissionstoryapp.data.network.api.ApiConfig
 import com.submission.submissionstoryapp.data.repository.UserRepository
 import com.submission.submissionstoryapp.databinding.ActivityAddStoryBinding
 import com.submission.submissionstoryapp.utils.UserPreference
@@ -60,6 +61,7 @@ class AddStoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
 
         userPreference = UserPreference.getInstance(applicationContext.dataStore)
 
@@ -156,13 +158,13 @@ class AddStoryActivity : AppCompatActivity() {
 
                 lifecycleScope.launch {
                     try {
-                        val token = getTokenFromDataStore()
+                        getTokenFromDataStore()
 
                         val pref = UserPreference.getInstance(dataStore)
                         val apiServiceAuth = ApiConfig.getAuthService()
 
                         val userRepository = UserRepository.getInstance(pref, apiServiceAuth)
-                        val apiService = ApiConfig.getStoryService(userRepository, token)
+                        val apiService = ApiConfig.getStoryService(userRepository)
 
 
                         val response = apiService.uploadStory(

@@ -1,4 +1,4 @@
-package com.submission.submissionstoryapp.data.model
+package com.submission.submissionstoryapp.data.network.story
 
 import com.google.gson.annotations.SerializedName
 

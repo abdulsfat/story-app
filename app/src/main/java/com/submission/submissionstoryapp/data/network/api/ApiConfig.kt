@@ -1,4 +1,4 @@
-package com.submission.submissionstoryapp.api
+package com.submission.submissionstoryapp.data.network.api
 
 import android.util.Log
 import com.submission.submissionstoryapp.data.repository.UserRepository
@@ -30,7 +30,7 @@ object ApiConfig {
     }
 
 
-    fun getStoryService(userRepository: UserRepository, token: String): ApiServiceStory {
+    fun getStoryService(userRepository: UserRepository): ApiServiceStory {
         val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
         val authInterceptor = Interceptor { chain ->

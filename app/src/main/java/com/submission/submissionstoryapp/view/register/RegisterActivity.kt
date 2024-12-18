@@ -14,8 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.submission.submissionstoryapp.databinding.ActivitySignupBinding
-import com.submission.submissionstoryapp.viewmodel.RegisterViewModel
-import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
+import com.submission.submissionstoryapp.data.factory.ViewModelFactory
 
 @Suppress("DEPRECATION")
 class RegisterActivity : AppCompatActivity() {

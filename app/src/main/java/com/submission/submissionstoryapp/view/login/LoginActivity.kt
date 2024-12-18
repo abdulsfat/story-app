@@ -12,9 +12,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
 import com.submission.submissionstoryapp.databinding.ActivityLoginBinding
-import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
+import com.submission.submissionstoryapp.data.factory.ViewModelFactory
 import com.submission.submissionstoryapp.view.main.MainActivity
-import com.submission.submissionstoryapp.viewmodel.LoginViewModel
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {

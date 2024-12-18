@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,17 +17,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.submission.submissionstoryapp.R
 import com.submission.submissionstoryapp.databinding.ActivityMainBinding
 import com.submission.submissionstoryapp.view.welcome.WelcomeActivity
-import com.submission.submissionstoryapp.viewmodel.MainViewModel
-import com.submission.submissionstoryapp.viewmodel.StoryViewModel
-import com.submission.submissionstoryapp.viewmodel.ViewModelFactory
+import com.submission.submissionstoryapp.data.factory.ViewModelFactory
 import com.submission.submissionstoryapp.view.adapter.StoryAdapter
 import com.submission.submissionstoryapp.view.addstory.AddStoryActivity
 import com.submission.submissionstoryapp.view.detail.DetailActivity
+import com.submission.submissionstoryapp.view.maps.MapsActivity
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
+
+    private val listStoryViewModel by viewModels<ListStoryViewModel> {
+        ViewModelFactory.getInstance(application)
+    }
 
     private val mainViewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(application)
@@ -43,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
 
         setupView()
         setupToolbar()
@@ -82,6 +86,11 @@ class MainActivity : AppCompatActivity() {
                 showLanguageSelectionDialog()
                 true
             }
+            R.id.maps -> {
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -116,17 +125,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            storyViewModel.stories.collect { stories ->
-                adapter.submitList(stories)
-            }
+        listStoryViewModel.listStory.observe(this) { pagingData ->
+            adapter.submitData(lifecycle, pagingData)
         }
 
-        lifecycleScope.launch {
-            storyViewModel.isLoading.collect { isLoading ->
-                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            }
-        }
+//        listStoryViewModel.loadState.observe(this) { loadStates ->
+//            binding.swipeRefreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
+//        }
+//
+//        listStoryViewModel.dialogMessage.observe(this) { message ->
+//            message?.let {
+//                showToast(it)
+//                viewModel.clearDialogMessage()
+//            }
+//        }
     }
 
     private fun fetchStoriesWithToken() {

@@ -1,7 +1,7 @@
-package com.submission.submissionstoryapp.api
+package com.submission.submissionstoryapp.data.network.api
 
-import com.submission.submissionstoryapp.data.model.LoginResponse
-import com.submission.submissionstoryapp.data.model.SignupResponse
+import com.submission.submissionstoryapp.data.network.authentication.LoginResponse
+import com.submission.submissionstoryapp.data.network.authentication.SignupResponse
 import retrofit2.http.*
 
 interface ApiServiceAuth {

@@ -32,4 +32,13 @@
     <string name="upload_success">Story uploaded successfully!</string>
     <string name="unexpected_error">An unexpected error occurred. Please try again.</string>
 
+    <string name="story_date">10 Jan 2024</string>
+    <string name="buka_map">Buka map</string>
+    <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
+
 </resources>
