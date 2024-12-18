@@ -11,45 +11,76 @@ app:cardElevation="4dp">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+
+    android:padding="12dp">
 
     <ImageView
-        android:id="@+id/ivStoryImage"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:id="@+id/ivProfile"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@string/description"
-        android:scaleType="centerCrop"
+        android:src="@drawable/ic_account_circle_24"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        app:layout_constraintEnd_toStartOf="@+id/tvStoryName"
+        tools:ignore="UnusedAttribute" />
 
     <TextView
         android:id="@+id/tvStoryName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:textStyle="bold"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:letterSpacing="0"
         android:textSize="18sp"
         android:textColor="@android:color/black"
         android:ellipsize="end"
-        app:layout_constraintTop_toBottomOf="@id/ivStoryImage"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivProfile"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Title Story" />
+        tools:text="username" />
+
+    <TextView
+        android:id="@+id/tvCreated"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="-6dp"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="11sp"
+        android:textColor="@android:color/darker_gray"
+        android:ellipsize="end"
+        app:layout_constraintTop_toBottomOf="@id/tvStoryName"
+        app:layout_constraintStart_toEndOf="@id/ivProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="created at" />
 
     <TextView
         android:id="@+id/tvStoryDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="#757575"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/black"
         android:textSize="14sp"
+        android:layout_marginVertical="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tvStoryName"
-        app:layout_constraintTop_toBottomOf="@id/tvStoryName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivProfile"
         tools:text="Description Story" />
+
+    <ImageView
+        android:id="@+id/ivStoryImage"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/description"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toBottomOf="@id/tvStoryDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="UnusedAttribute" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

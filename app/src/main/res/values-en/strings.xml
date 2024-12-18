@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SubmissionStoryApp</string>
+    <string name="app_name">Story App</string>
     <string name="signup">Sign Up</string>
     <string name="login">Login</string>
     <string name="message_welcome_page">Want to share your experiences? Log in or sign up now. Enjoy our storytelling service! Only on Story APP</string>

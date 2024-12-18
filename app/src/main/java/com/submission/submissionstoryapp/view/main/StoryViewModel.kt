@@ -8,7 +8,6 @@ import com.submission.submissionstoryapp.data.repository.StoryRepository
 import com.submission.submissionstoryapp.data.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -18,16 +17,9 @@ class StoryViewModel(
     private val storyRepository: StoryRepository,
     private val userRepository: UserRepository
 ) : AndroidViewModel(application) {
-
-
-    private val _stories = MutableStateFlow<List<ListStoryItem>>(emptyList())
-    val stories: StateFlow<List<ListStoryItem>> = _stories
-
     private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
     private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage
+
 
     fun fetchStories() {
         viewModelScope.launch {

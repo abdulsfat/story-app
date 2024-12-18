@@ -1,6 +1,5 @@
 package com.submission.submissionstoryapp.data.repository
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -18,13 +17,11 @@ open class StoryRepository(
     private val storyDatabase: StoryDatabase,
     private val apiServiceStory: ApiServiceStory
 ) {
-    private val TAG = "StoryRepository"
 
     suspend fun getStoriesWithLocation() = apiServiceStory.getStoriesWithLocation(1)
 
     @OptIn(ExperimentalPagingApi::class)
     fun getStories(): Flow<PagingData<ListStoryItem>> {
-        Log.d(TAG, "getStories() called - Creating Pager and returning flow")
         return Pager(
             config = PagingConfig(
                 pageSize = 5,
@@ -33,7 +30,6 @@ open class StoryRepository(
             ),
             remoteMediator = StoryRemoteMediator(storyDatabase, apiServiceStory),
             pagingSourceFactory = {
-                Log.d(TAG, "PagingSourceFactory called - Fetching from database")
                 storyDatabase.storyDao().getAllStory()
             }
         ).flow.map { pagingData->

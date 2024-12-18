@@ -1,6 +1,5 @@
 package com.submission.submissionstoryapp.data.repository
 
-import android.util.Log
 import com.submission.submissionstoryapp.data.network.api.ApiServiceAuth
 import com.submission.submissionstoryapp.data.network.authentication.LoginResponse
 import com.submission.submissionstoryapp.data.network.authentication.SignupResponse
@@ -15,7 +14,6 @@ class UserRepository private constructor(
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
-        Log.d("UserPreference", "Token saved: ${user.token}")
     }
 
     fun getSession(): Flow<UserModel> {

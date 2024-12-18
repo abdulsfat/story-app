@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SubmissionStoryApp</string>
+    <string name="app_name">Story App</string>
     <string name="signup">Daftar</string>
     <string name="login">Masuk</string>
     <string name="message_welcome_page">Mau berbagi pengalaman mu? segera masuk atau daftar. Nikmati layanan berbagi cerita! hanya di Story APP</string>

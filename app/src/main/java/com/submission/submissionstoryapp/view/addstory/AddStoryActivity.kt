@@ -42,7 +42,6 @@ class AddStoryActivity : AppCompatActivity() {
 
         binding.locationSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                // Jika Switch ON, minta izin lokasi
                 if (viewModel.checkLocationPermission(this)) {
                     getLocation()
                 } else {
