@@ -14,7 +14,7 @@ import com.submission.submissionstoryapp.utils.toListStoryItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class StoryRepository private constructor(
+open class StoryRepository(
     private val storyDatabase: StoryDatabase,
     private val apiServiceStory: ApiServiceStory
 ) {

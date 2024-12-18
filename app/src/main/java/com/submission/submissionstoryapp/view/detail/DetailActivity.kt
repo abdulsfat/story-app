@@ -34,7 +34,7 @@ class DetailActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 val token = getTokenFromDataStore()
                 if (token.isNotEmpty()) {
-                    fetchStoryDetail(storyId!!, token)
+                    fetchStoryDetail(storyId!!)
                 } else {
                     Toast.makeText(this@DetailActivity, "Token not found!", Toast.LENGTH_SHORT)
                         .show()
@@ -50,7 +50,7 @@ class DetailActivity : AppCompatActivity() {
         return user.token
     }
 
-    private fun fetchStoryDetail(storyId: String, token: String) {
+    private fun fetchStoryDetail(storyId: String) {
         lifecycleScope.launch {
             showLoading(true)
             try {
@@ -60,8 +60,6 @@ class DetailActivity : AppCompatActivity() {
                 val userRepository = UserRepository.getInstance(pref, apiServiceAuth)
                 val apiService = ApiConfig.getStoryService(userRepository)
                 val response = apiService.getStoryDetail(storyId)
-
-//                Log.d("DetailActivity", "Response: $response")
 
                 if (response.story != null) {
                     val story = response.story

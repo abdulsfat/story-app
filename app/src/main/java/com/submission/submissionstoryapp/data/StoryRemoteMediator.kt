@@ -1,6 +1,5 @@
 package com.submission.submissionstoryapp.data
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -21,11 +20,9 @@ class StoryRemoteMediator(
 
     private companion object {
         const val INITIAL_PAGE_INDEX = 1
-        const val TAG = "StoryRemoteMediator"
     }
 
     override suspend fun initialize(): InitializeAction {
-        Log.d(TAG, "initialize() called")
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
@@ -53,26 +50,28 @@ class StoryRemoteMediator(
         }
 
         try {
-            Log.d(TAG, "Fetching data from API: page = $page, pageSize = ${state.config.pageSize}")
-            val response = apiService.getStories(page, state.config.pageSize)
-            val storyEntities = response.toStoryEntityList()
+            val responseData = apiService.getStories(page, state.config.pageSize)
+            val storyEntities = responseData.toStoryEntityList()
 
             val endOfPaginationReached = storyEntities.isEmpty()
-            Log.d(TAG, "API Response Success: Fetched ${storyEntities.size} stories")
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    Log.d(TAG, "Deleting all stories from database")
+                    database.remoteKeysDao().deleteAllRemoteKeys()
                     database.storyDao().deleteAllStories()
                 }
-                Log.d(TAG, "Inserting ${storyEntities.size} stories into database")
+                val prevKey = if (page == 1) null else page - 1
+                val nextKey = if (endOfPaginationReached) null else page + 1
+                val keys = responseData.listStory?.mapNotNull { story ->
+                    story?.id?.let { id -> RemoteKeysEntity(id = id, prevKey = prevKey, nextKey = nextKey) }
+                } ?: emptyList()
+
+                database.remoteKeysDao().insertRemoteKeys(keys)
                 database.storyDao().insertStories(storyEntities)
             }
 
-            Log.d(TAG, "Returning MediatorResult.Success: endOfPaginationReached = $endOfPaginationReached")
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (e: Exception) {
-            Log.e(TAG, "Error fetching data from API or inserting into database", e)
             return MediatorResult.Error(e)
         }
     }
@@ -86,9 +85,7 @@ class StoryRemoteMediator(
             createdAt = this.createdAt ?: "",
             lon = this.lon?.toString()?.toDoubleOrNull(),
             lat = this.lat?.toString()?.toDoubleOrNull()
-        ).also {
-            Log.d(TAG, "Mapping ListStoryItem to StoryEntity: id = ${it.id}")
-        }
+        )
     }
 
     private fun StoryResponse.toStoryEntityList(): List<StoryEntity> {

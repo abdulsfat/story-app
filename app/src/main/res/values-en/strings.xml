@@ -40,5 +40,6 @@
     <string name="satellite_type">Satellite</string>
     <string name="terrain_type">Terrain</string>
     <string name="hybrid_type">Hybrid</string>
+    <string name="error_location_services">error location service</string>
 
 </resources>

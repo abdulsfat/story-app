@@ -1,4 +1,4 @@
-package com.submission.submissionstoryapp
+package com.submission.submissionstoryapp.view.main
 
 import org.junit.Test
 
